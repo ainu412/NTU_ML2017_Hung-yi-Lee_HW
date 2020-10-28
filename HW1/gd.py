@@ -16,7 +16,7 @@ INDEX_PM_2_5 = 9
 INDEX_TRAIN_Y_HOUR =N_INPUT_X_HOUR
 N_TRAIN_HOUR_PER_MONTH = N_HOUR_PER_DAY * N_TRAIN_DAY_PER_MONTH #480
 
-N_ITERATION = 20000
+N_ITERATION = 200
 
 def GD(x, y, w, eta, iteration, lambdaL2):
     list_loss = []
@@ -49,8 +49,6 @@ def Adagrad(x, y, w, eta, iteration, lambdaL2):
         list_loss.append(loss)
 
         grad = np.dot(x.T, diff) / n_train + lambdaL2 * w  # regularization gradient
-        print('gradient', grad)
-        print('gradient-shape', len(grad))# 163
 
         sum_grad_square += grad **2
         w = w - eta * grad / np.sqrt(sum_grad_square)
@@ -68,7 +66,7 @@ def SGD(x, y, w, eta, iteration, lambdaL2):
         loss = np.sum(diff ** 2) / n_train  # no regularization loss
         list_loss.append(loss)
         rand = np.random.randint(0, n_train)
-        grad = x[rand] * diff[rand]/n_train + lambdaL2 * w  # regularization gradient
+        grad = x[rand] * diff[rand] + lambdaL2 * w  # regularization gradient
         w = w - eta * grad
 
     return w, list_loss
@@ -133,8 +131,11 @@ row = csv.reader(ans_text, delimiter=',')
 n_row = 0
 testY = []
 for r in row:
-    if n_row == 0: continue
     testY.append(r[1])
+testY = testY[1:] # ignore top header
+testY = list(map(int,testY))
+testY = np.array(testY)
+print(testY)
 ans_text.close()
 
 # start training
@@ -142,14 +143,14 @@ ans_text.close()
 trainX = np.array(trainX)
 trainY = np.array(trainY)
 testX = np.array(testX)
-testY = np.array(testY)
+
 bias = np.array(np.ones((testX.shape[0], 1)))
 testX = np.concatenate((bias, testX), axis=1)
 trainX = np.concatenate((np.ones((trainX.shape[0],1)), trainX), axis=1)
 
 w0=np.zeros(trainX.shape[1])
-#w_GD, loss_GD = GD(trainX, trainY, w0, eta=0.0001, iteration=20000, lambdaL2=0)
-w_SGD, loss_SGD = SGD(trainX, trainY, w0, eta=0.0001, iteration=N_ITERATION, lambdaL2=0)
+w_GD, loss_GD = GD(trainX, trainY, w0, eta=0.000001, iteration=N_ITERATION, lambdaL2=0)
+w_SGD, loss_SGD = SGD(trainX, trainY, w0, eta=0.000001, iteration=N_ITERATION, lambdaL2=0)
 w_Adagrad, loss_Adagrad = Adagrad(trainX, trainY, w0,eta=0.01, iteration=N_ITERATION, lambdaL2=0)
 
 # close form
@@ -159,12 +160,21 @@ loss_cf = np.sum((hypo_cf-trainY)**2)/len(trainX)
 loss_cf = [loss_cf for i in range(N_ITERATION)]
 
 # output test prediction
-#y_GD = w_GD.dot(testX)
-y_SGD = testX.dot(w_SGD)
-y_Adagrad = testX.dot(w_Adagrad)
-y_cf = testX.dot(w_cf)
+testY_GD = testX.dot(w_GD)
+testY_SGD = testX.dot(w_SGD)
+testY_Adagrad = testX.dot(w_Adagrad)
+testY_cf = testX.dot(w_cf)
 
-# csv format
+# calculate test error (MSE)
+diff_GD = testY_GD-testY
+mse_GD = np.sum((diff_GD)**2)/testY.shape[0]
+mse_SGD = np.sum((testY_SGD-testY)**2)/testY.shape[0]
+mse_Adagrad = np.sum((testY_Adagrad-testY)**2)/testY.shape[0]
+mse_cf = np.sum((testY_cf-testY)**2)/testY.shape[0]
+print('error_GD: %f | error_SGD: %f | error_Adagrad: %f | error_cf: %f | '
+      % (mse_GD, mse_SGD, mse_Adagrad, mse_cf))
+
+# write Adagrad prediction into csv file
 ans = []
 for month in range(len(testX)):
     ans.append(["id_" + str(month)])
@@ -180,39 +190,45 @@ for month in range(len(ans)):
 text.close()
 
 
-#plot training data with different gradiant method
-plt.plot(np.arange(len(loss_Adagrad[3:])), loss_Adagrad[3:], 'b', label="ada")
-plt.plot(np.arange(len(loss_SGD[3:])), loss_SGD[3:], 'g', label='sgd')
-# plt.plot(np.arange(len(cost_list_sgd50[3:])), cost_list_sgd50[3:], 'c', label='sgd50')
-# plt.plot(np.arange(len(cost_list_gd[3:])), cost_list_gd[3:], 'r', label='gd')
+# plot training data with different gradient methods
+plt.plot(np.arange(len(loss_Adagrad[3:])), loss_Adagrad[3:], 'b', label="Adagrad")
+plt.plot(np.arange(len(loss_SGD[3:])), loss_SGD[3:], 'g', label='SGD')
+plt.plot(np.arange(len(loss_GD[3:])), loss_GD[3:], 'r', label='GD')
 plt.plot(np.arange(len(loss_cf[3:])), loss_cf[3:], 'y--', label='close-form')
+
 plt.title('Train Process')
 plt.xlabel('Iteration')
 plt.ylabel('Loss Function(Quadratic)')
 plt.legend()
-plt.savefig(os.path.join(os.path.dirname(__file__), "figures/TrainProcess"))
+plt.savefig(os.path.join(os.path.dirname(__file__), "figures/TrainLossProcess"))
 plt.show()
 
-#plot fianl answer
+# plot final test answer
 plt.figure()
-plt.subplot(131)
+plt.subplot(141)
 plt.title('CloseForm')
 plt.xlabel('dataset')
 plt.ylabel('pm2.5')
-plt.plot(np.arange((len(testY))), testY, 'r,')
-plt.plot(np.arange(240), y_cf, 'b')
-plt.subplot(132)
-plt.title('ada')
+plt.plot(np.arange((len(testY))), testY, 'r')
+plt.plot(np.arange(240), testY_cf, 'c')
+plt.subplot(142)
+plt.title('Adagrad')
 plt.xlabel('dataset')
 plt.ylabel('pm2.5')
-plt.plot(np.arange((len(testY))), testY, 'r,')
-plt.plot(np.arange(240), y_Adagrad, 'g')
-plt.subplot(133)
-plt.title('sgd')
+plt.plot(np.arange((len(testY))), testY, 'r')
+plt.plot(np.arange(240), testY_Adagrad, 'g')
+plt.subplot(143)
+plt.title('SGD')
 plt.xlabel('dataset')
 plt.ylabel('pm2.5')
-plt.plot(np.arange((len(testY))), testY, 'r,')
-plt.plot(np.arange(240), y_SGD, 'b')
+plt.plot(np.arange((len(testY))), testY, 'r')
+plt.plot(np.arange(240), testY_SGD, 'b')
+plt.subplot(144)
+plt.title('GD')
+plt.xlabel('dataset')
+plt.ylabel('pm2.5')
+plt.plot(np.arange((len(testY))), testY, 'r')
+plt.plot(np.arange(240), testY_GD, 'y')
 plt.tight_layout()
 plt.savefig(os.path.join(os.path.dirname(__file__), "figures/Compare"))
 plt.show()
