@@ -2,8 +2,7 @@ from math import floor
 
 import numpy as np
 import pandas as pd
-import torch
-
+attribute_num = 106 # exclude Holand_Netherlands
 
 def data_process_x(raw):
 
@@ -84,8 +83,8 @@ def cal_acc(x, y_head, mu1, mu2, shared_sigma, N1, N2):
 
 def train_process(x,y):
     N = x.shape[0]
-    mu1 = np.zeros((106,))
-    mu2 = np.zeros((106,))
+    mu1 = np.zeros((attribute_num,))
+    mu2 = np.zeros((attribute_num,))
     N1 = 0
     N2 = 0
     for i in range(N):
@@ -98,8 +97,8 @@ def train_process(x,y):
     mu1 /= N1
     mu2 /= N2
 
-    sigma1 = np.zeros((106,106))
-    sigma2 = np.zeros((106,106))
+    sigma1 = np.zeros((attribute_num,attribute_num))
+    sigma2 = np.zeros((attribute_num,attribute_num))
     for i in range(N):
         if y[i] == 1:
           sigma1 += np.dot(np.transpose([x[i] - mu1]), [x[i] - mu1])
@@ -129,15 +128,15 @@ if __name__=='__main__':
     # n-cross validation
     n = 4
     train_x, train_y, valid_x, valid_y = split_n_cross_valid_data(train_x, train_y, n)
-    valid_accs = np.zeros(n,)
-    test_accs = np.zeros(n,)
+    valid_accs = []
+    test_accs = []
     for i in range(n):
         mu1, mu2, common_sigma, N1, N2 = train_process(train_x[i], train_y[i])
         valid_acc, _ = cal_acc(valid_x[i], valid_y[i], mu1, mu2, common_sigma, N1, N2)
         test_acc, test_pred = cal_acc(test_x, test_y, mu1, mu2, common_sigma, N1, N2)
         print('Valid ACC: %.5f | Test ACC: %.5f' % (valid_acc, test_acc))
-        valid_accs[i] = valid_acc
-        test_accs[i] = test_acc
+        valid_accs.append(valid_acc)
+        test_accs.append(test_acc)
 
     avg_valid_acc = np.sum(valid_accs) / n
     avg_test_acc = np.sum(test_accs) / n

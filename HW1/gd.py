@@ -164,7 +164,7 @@ bias = np.array(np.ones((testX.shape[0], 1)))
 testX = np.concatenate((bias, testX), axis=1)
 trainX = np.concatenate((np.ones((trainX.shape[0],1)), trainX), axis=1)
 
-w0 = np.zeros(trainX.shape[1])
+w0 = np.zeros(trainX.shape[1],)
 w_GD, loss_GD, inference_time_GD = GD(trainX, trainY, w0, eta=0.000001, iteration=N_ITERATION, lambdaL2=0)
 w_SGD, loss_SGD, inference_time_SGD = SGD(trainX, trainY, w0, eta=0.000001, iteration=N_ITERATION, lambdaL2=0)
 w_Adagrad, loss_Adagrad, inference_time_Adagrad = Adagrad(trainX, trainY, w0,eta=0.01, iteration=N_ITERATION, lambdaL2=0)
