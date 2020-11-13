@@ -1,3 +1,4 @@
+import time
 from math import floor
 
 import numpy as np
@@ -110,12 +111,13 @@ def train_process(x,y):
     return mu1, mu2, common_sigma, N1, N2
 
 if __name__=='__main__':
+    start = time.time()
     train = pd.read_csv('data/train.csv')
     test = pd.read_csv('data/test.csv')
     ans = pd.read_csv('data/correct_answer.csv')
 
-    train_x = data_process_x(train).drop('native_country_ Holand-Netherlands', axis=1).values # train比test多一个属性,转为one-hot时就会多一列,导致mu1/mu2多一列
-    train_y = data_process_y(train).values
+    train_x_all = data_process_x(train).drop('native_country_ Holand-Netherlands', axis=1).values # train比test多一个属性,转为one-hot时就会多一列,导致mu1/mu2多一列
+    train_y_all = data_process_y(train).values
     test_x = data_process_x(test).values
     test_y = ans['label'].values
 
@@ -127,21 +129,21 @@ if __name__=='__main__':
 
     # n-cross validation
     n = 4
-    train_x, train_y, valid_x, valid_y = split_n_cross_valid_data(train_x, train_y, n)
+    train_x, train_y, valid_x, valid_y = split_n_cross_valid_data(train_x_all, train_y_all, n)
     valid_accs = []
-    test_accs = []
     for i in range(n):
         mu1, mu2, common_sigma, N1, N2 = train_process(train_x[i], train_y[i])
         valid_acc, _ = cal_acc(valid_x[i], valid_y[i], mu1, mu2, common_sigma, N1, N2)
-        test_acc, test_pred = cal_acc(test_x, test_y, mu1, mu2, common_sigma, N1, N2)
-        print('Valid ACC: %.5f | Test ACC: %.5f' % (valid_acc, test_acc))
-        valid_accs.append(valid_acc)
-        test_accs.append(test_acc)
 
-    avg_valid_acc = np.sum(valid_accs) / n
-    avg_test_acc = np.sum(test_accs) / n
-    print('AVG Valid ACC: %.5f | AVG Test ACC: %.5f' % (avg_valid_acc, avg_test_acc))
+        print('Valid ACC: %.5f' % valid_acc)
+        valid_accs.append(valid_acc)
+
+    mu1, mu2, common_sigma, N1, N2 = train_process(train_x_all, train_y_all)
+    test_acc, test_pred = cal_acc(test_x, test_y, mu1, mu2, common_sigma, N1, N2)
+    print('AVG Valid ACC: %.5f | Test ACC: %.5f' % (np.mean(valid_acc), test_acc))
 
     test_pred = pd.DataFrame({'id':np.arange(1,1+test_x.shape[0]), 'label':test_pred})
     test_pred.to_csv('output/gp_pred.csv')
 
+    end = time.time()
+    print('Training + Test Time (s): %f' % (end - start))
