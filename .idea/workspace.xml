@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2469a486-6d59-4778-8f65-1b95ea5532c0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/HW3/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/data/sample.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/data/test.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/data/train.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/data_analysis.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/hw3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/cnn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_analysis/angry.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_analysis/disgust.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_analysis/fear.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_analysis/happy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_analysis/neutral.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_analysis/sad.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_analysis/surprise.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/data_example.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/dnn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/cnn_acc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/cnn_cm.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/cnn_loss.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/dnn_acc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/dnn_cm.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/dnn_loss.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/f1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/f2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/f3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/l1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/l2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/l3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/sad_n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/sm0.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/sm1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/sm2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/sm3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/sm4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/sm5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/w1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/w2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/w3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/img/report/wrong.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/report.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/utility.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JupyterTrust" id="a929e588-2e06-47ee-a22c-91dd30295f55" />
+  <component name="ProjectId" id="1kUSC5qSy05MAoLVNviyejUkQVx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2469a486-6d59-4778-8f65-1b95ea5532c0" name="Default Changelist" comment="" />
+      <created>1605753548873</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605753548873</updated>
+      <workItem from="1605753549893" duration="4000" />
+    </task>
+    <servers />
+  </component>
+</project>
