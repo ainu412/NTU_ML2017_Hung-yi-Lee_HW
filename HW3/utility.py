@@ -1,21 +1,6 @@
 import pandas as pd
 import numpy as np
-from time import time
 from matplotlib import pyplot as plt
-
-# def plot_training_history(r):
-#     # plot loss
-#     plt.plot(r.history['loss'], label='loss')
-#     plt.plot(r.history['val_loss'], label='val_loss')
-#     plt.legend()
-#     plt.show()
-#
-#     # plot accuracy
-#     plt.plot(r.history['acc'], label='acc')
-#     plt.plot(r.history['val_acc'], label='val_acc')
-#     plt.legend()
-#     plt.show()
-
 
 def plot_images(images, cls_true, cls_pred=None):
     name = ['angry','disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral']
@@ -30,9 +15,6 @@ def plot_images(images, cls_true, cls_pred=None):
 
         image = images[i].reshape(48, 48)
 
-        # Ensure the noisy pixel-values are between 0 and 1.
-        # image = np.clip(image, 0.0, 1.0)
-
         # Plot image.
         ax.imshow(image,
                   cmap='gray',
@@ -40,19 +22,19 @@ def plot_images(images, cls_true, cls_pred=None):
 
         # Show true and predicted classes.
         if cls_pred is None:
-            xlabel = "True:{0}".format(name[cls_true[i]])
+            title = 'True Data'
+            xlabel = "{0}".format(name[cls_true[i]])
+            # Show the classes as the label on the x-axis.
+            ax.set_xlabel(xlabel)
         else:
-            xlabel = "True:{0}, Pred:{1}".format(name[cls_true[i]], name[cls_pred[i]])
+            title = 'Wrong Estimates: True:{0}, Pred:{1}'.format(name[cls_true[i]], name[cls_pred[i]])
 
-        # Show the classes as the label on the x-axis.
-        ax.set_xlabel(xlabel)
-
-        # Remove ticks from the plot.
+        # Remove ticks
         ax.set_xticks([])
         ax.set_yticks([])
 
-    # Ensure the plot is shown correctly with multiple plots
-    # in a single Notebook cell.
+    # Ensure the plot is shown correctly with multiple plots in a single Notebook cell.
+    plt.title(title, loc='center')
     plt.show()
 
 

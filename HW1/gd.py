@@ -245,7 +245,7 @@ plt.title('Train Process')
 plt.xlabel('Iteration')
 plt.ylabel('Training Time(millisecond)')
 plt.legend()
-plt.savefig(os.path.join(os.path.dirname(__file__), "figures/TrainTimeProcess"))
+plt.savefig("figures/TrainTimeProcess")
 plt.show()
 
 ## plot test error and test inference time
